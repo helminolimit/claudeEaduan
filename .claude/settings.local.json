@@ -16,7 +16,8 @@
       "Bash(composer show *)",
       "Bash(composer require *)",
       "mcp__laravel-boost__application-info",
-      "Bash(findstr /i notif)"
+      "Bash(findstr /i notif)",
+      "Bash(vendor/bin/pint app/Models/User.php --format agent)"
     ]
   },
   "enableAllProjectMcpServers": true,
