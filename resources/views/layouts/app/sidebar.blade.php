@@ -12,11 +12,13 @@
 
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('Platform')" class="grid">
-                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
-                    </flux:sidebar.item>
-
                     @if (auth()->user()->isAdmin())
+                        <flux:sidebar.item icon="home" :href="route('admin.dashboard')" :current="request()->routeIs('admin.dashboard')" wire:navigate>
+                            {{ __('Dashboard') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="users" :href="route('admin.users.index')" :current="request()->routeIs('admin.users.*')" wire:navigate>
+                            {{ __('Users') }}
+                        </flux:sidebar.item>
                         <flux:sidebar.item icon="tag" :href="route('categories.index')" :current="request()->routeIs('categories.*')" wire:navigate>
                             {{ __('Categories') }}
                         </flux:sidebar.item>
@@ -27,10 +29,16 @@
                             {{ __('Reports') }}
                         </flux:sidebar.item>
                     @elseif (auth()->user()->isOfficer())
+                        <flux:sidebar.item icon="home" :href="route('officer.dashboard')" :current="request()->routeIs('officer.dashboard')" wire:navigate>
+                            {{ __('Dashboard') }}
+                        </flux:sidebar.item>
                         <flux:sidebar.item icon="clipboard-document-list" :href="route('officer.aduan.index')" :current="request()->routeIs('officer.aduan.*')" wire:navigate>
                             {{ __('My Complaints') }}
                         </flux:sidebar.item>
                     @else
+                        <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                            {{ __('Dashboard') }}
+                        </flux:sidebar.item>
                         <flux:sidebar.item icon="chat-bubble-left-ellipsis" :href="route('my.aduan.index')" :current="request()->routeIs('my.aduan.*')" wire:navigate>
                             {{ __('My Complaints') }}
                         </flux:sidebar.item>

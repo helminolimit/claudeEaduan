@@ -7,14 +7,19 @@ use App\Livewire\Complaints\Index as ComplaintsIndex;
 use App\Livewire\Complaints\MyComplaints;
 use App\Livewire\Complaints\OfficerIndex;
 use App\Livewire\Complaints\Show as ComplaintShow;
+use App\Livewire\Dashboard\AdminDashboard;
+use App\Livewire\Dashboard\ComplainantDashboard;
+use App\Livewire\Dashboard\OfficerDashboard;
 use App\Livewire\Notifications\Index as NotificationsIndex;
 use App\Livewire\Reports\Dashboard as ReportsDashboard;
+use App\Livewire\Users\Index as UsersIndex;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    // Complainant dashboard
+    Route::livewire('dashboard', ComplainantDashboard::class)->name('dashboard');
 
     Route::livewire('categories', CategoriesIndex::class)->name('categories.index');
     Route::livewire('complaints', ComplaintsIndex::class)->name('complaints.index');
@@ -32,14 +37,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::livewire('/notifications', NotificationsIndex::class)->name('notifications.index');
 });
 
-// Admin complaint management
+// Admin routes
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
+    Route::livewire('dashboard', AdminDashboard::class)->name('admin.dashboard');
     Route::livewire('aduan', AdminIndex::class)->name('admin.aduan.index');
     Route::livewire('reports', ReportsDashboard::class)->name('admin.reports');
+    Route::livewire('users', UsersIndex::class)->name('admin.users.index');
 });
 
-// Officer complaint management
+// Officer routes
 Route::middleware(['auth', 'verified', 'role:officer'])->prefix('officer')->group(function () {
+    Route::livewire('dashboard', OfficerDashboard::class)->name('officer.dashboard');
     Route::livewire('aduan', OfficerIndex::class)->name('officer.aduan.index');
 });
 
