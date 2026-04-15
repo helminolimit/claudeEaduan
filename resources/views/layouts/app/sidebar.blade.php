@@ -15,12 +15,29 @@
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="tag" :href="route('categories.index')" :current="request()->routeIs('categories.*')" wire:navigate>
-                        {{ __('Categories') }}
-                    </flux:sidebar.item>
-                    <flux:sidebar.item icon="chat-bubble-left-ellipsis" :href="route('complaints.index')" :current="request()->routeIs('complaints.*')" wire:navigate>
-                        {{ __('Complaints') }}
-                    </flux:sidebar.item>
+
+                    @if (auth()->user()->isAdmin())
+                        <flux:sidebar.item icon="tag" :href="route('categories.index')" :current="request()->routeIs('categories.*')" wire:navigate>
+                            {{ __('Categories') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="chat-bubble-left-ellipsis" :href="route('admin.aduan.index')" :current="request()->routeIs('admin.aduan.*')" wire:navigate>
+                            {{ __('Manage Complaints') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="chart-bar" :href="route('admin.reports')" :current="request()->routeIs('admin.reports')" wire:navigate>
+                            {{ __('Reports') }}
+                        </flux:sidebar.item>
+                    @elseif (auth()->user()->isOfficer())
+                        <flux:sidebar.item icon="clipboard-document-list" :href="route('officer.aduan.index')" :current="request()->routeIs('officer.aduan.*')" wire:navigate>
+                            {{ __('My Complaints') }}
+                        </flux:sidebar.item>
+                    @else
+                        <flux:sidebar.item icon="chat-bubble-left-ellipsis" :href="route('my.aduan.index')" :current="request()->routeIs('my.aduan.*')" wire:navigate>
+                            {{ __('My Complaints') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="plus-circle" :href="route('aduan.create')" :current="request()->routeIs('aduan.create')" wire:navigate>
+                            {{ __('Submit Complaint') }}
+                        </flux:sidebar.item>
+                    @endif
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
