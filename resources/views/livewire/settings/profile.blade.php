@@ -24,6 +24,12 @@
                 @endif
             </div>
 
+            <flux:field>
+                <flux:label>{{ __('Email Notifications') }}</flux:label>
+                <flux:description>{{ __('Receive email notifications for complaint activity.') }}</flux:description>
+                <flux:switch wire:model="emailNotifications" />
+            </flux:field>
+
             <div class="flex items-center gap-4">
                 <flux:button variant="primary" type="submit">{{ __('Save') }}</flux:button>
             </div>

@@ -44,12 +44,13 @@
             <flux:spacer />
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
-                </flux:sidebar.item>
-
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
+                <flux:sidebar.item
+                    icon="bell"
+                    :href="route('notifications.index')"
+                    :current="request()->routeIs('notifications.*')"
+                    wire:navigate
+                >
+                    {{ __('Notifications') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
 
@@ -61,6 +62,8 @@
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <flux:spacer />
+
+            <livewire:notifications.bell />
 
             <flux:dropdown position="top" align="end">
                 <flux:profile

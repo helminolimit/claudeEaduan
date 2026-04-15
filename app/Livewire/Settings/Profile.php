@@ -19,6 +19,8 @@ class Profile extends Component
 
     public string $email = '';
 
+    public bool $emailNotifications = true;
+
     /**
      * Mount the component.
      */
@@ -26,6 +28,7 @@ class Profile extends Component
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->emailNotifications = (bool) Auth::user()->email_notifications;
     }
 
     /**
@@ -36,6 +39,7 @@ class Profile extends Component
         $user = Auth::user();
 
         $validated = $this->validate($this->profileRules($user->id));
+        $validated['email_notifications'] = $this->emailNotifications;
 
         $user->fill($validated);
 

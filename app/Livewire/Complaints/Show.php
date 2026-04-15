@@ -7,6 +7,7 @@ use App\Enums\ComplaintStatus;
 use App\Enums\UserRole;
 use App\Models\Complaint;
 use App\Models\User;
+use App\Services\NotificationService;
 use Flux\Flux;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
@@ -55,8 +56,10 @@ class Show extends Component
             'created_at' => now(),
         ]);
 
-        $this->rejectionReason = '';
         $this->complaint->refresh();
+        app(NotificationService::class)->statusChanged($this->complaint);
+
+        $this->rejectionReason = '';
         Flux::modal('update-status')->close();
         Flux::toast(variant: 'success', text: 'Status updated.');
     }
@@ -69,6 +72,7 @@ class Show extends Component
 
         $this->complaint->update(['officer_id' => $this->assignOfficerId]);
         $this->complaint->refresh();
+        app(NotificationService::class)->complaintAssigned($this->complaint);
         Flux::modal('assign-officer')->close();
         Flux::toast(variant: 'success', text: 'Officer assigned.');
     }
@@ -95,6 +99,8 @@ class Show extends Component
             'user_id' => auth()->id(),
             'body' => $this->commentBody,
         ]);
+
+        app(NotificationService::class)->commentAdded($this->complaint, auth()->id());
 
         $this->commentBody = '';
         unset($this->comments);

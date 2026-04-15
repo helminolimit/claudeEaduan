@@ -7,6 +7,7 @@ use App\Livewire\Complaints\Index as ComplaintsIndex;
 use App\Livewire\Complaints\MyComplaints;
 use App\Livewire\Complaints\OfficerIndex;
 use App\Livewire\Complaints\Show as ComplaintShow;
+use App\Livewire\Notifications\Index as NotificationsIndex;
 use App\Livewire\Reports\Dashboard as ReportsDashboard;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Complaint detail — accessible to all authenticated users
     Route::get('aduan/{complaint}', ComplaintShow::class)->name('aduan.show');
+
+    // Notifications
+    Route::livewire('/notifications', NotificationsIndex::class)->name('notifications.index');
 });
 
 // Admin complaint management

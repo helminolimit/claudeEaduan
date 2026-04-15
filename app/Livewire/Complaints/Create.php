@@ -6,6 +6,7 @@ use App\Enums\ComplaintPriority;
 use App\Enums\ComplaintStatus;
 use App\Models\Category;
 use App\Models\Complaint;
+use App\Services\NotificationService;
 use Flux\Flux;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
@@ -125,6 +126,8 @@ class Create extends Component
         }
 
         session()->forget('aduan_draft');
+
+        app(NotificationService::class)->complaintSubmitted($complaint);
 
         Flux::modal('confirm-submit')->close();
 
