@@ -87,6 +87,9 @@
                                     <flux:menu.item icon="pencil" wire:click="openEditModal({{ $user->id }})">
                                         {{ __('Edit') }}
                                     </flux:menu.item>
+                                    <flux:menu.item icon="key" wire:click="openResetPasswordModal({{ $user->id }})">
+                                        {{ __('Reset Password') }}
+                                    </flux:menu.item>
                                     @if ($user->id !== auth()->id())
                                         <flux:menu.separator />
                                         <flux:modal.trigger name="delete-{{ $user->id }}">
@@ -172,6 +175,51 @@
                 </flux:modal.close>
                 <flux:button variant="primary" wire:click="createUser" @click="loading = true">
                     {{ __('Create User') }}
+                </flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Reset Password Modal --}}
+    <flux:modal
+        name="reset-password"
+        class="min-w-[32rem]"
+        :closable="false"
+        x-data="{ loading: false }"
+        x-on:cancel="loading && $event.preventDefault()"
+        x-on:livewire:commit.window="loading = false"
+    >
+        <div class="relative space-y-6">
+            <div wire:loading wire:target="resetUserPassword" class="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/80 dark:bg-zinc-900/80">
+                <flux:icon name="arrow-path" class="size-6 animate-spin text-zinc-500" />
+            </div>
+            <div>
+                <flux:heading size="lg">{{ __('Reset Password') }}</flux:heading>
+                <flux:subheading>{{ __('Set a new password for this user. Minimum 8 characters.') }}</flux:subheading>
+            </div>
+            <div class="space-y-4">
+                <flux:input
+                    wire:model="resetPasswordNew"
+                    :label="__('New Password')"
+                    type="password"
+                    viewable
+                    required
+                />
+                <flux:input
+                    wire:model="resetPasswordNew_confirmation"
+                    :label="__('Confirm New Password')"
+                    type="password"
+                    viewable
+                    required
+                />
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">{{ __('Cancel') }}</flux:button>
+                </flux:modal.close>
+                <flux:button variant="primary" wire:click="resetUserPassword" @click="loading = true">
+                    {{ __('Update Password') }}
                 </flux:button>
             </div>
         </div>

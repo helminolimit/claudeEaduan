@@ -49,6 +49,13 @@ class Index extends Component
 
     public string $editRole = '';
 
+    // Reset password form
+    public ?int $resetPasswordUserId = null;
+
+    public string $resetPasswordNew = '';
+
+    public string $resetPasswordNew_confirmation = '';
+
     public function sort(string $column): void
     {
         if ($this->sortBy === $column) {
@@ -124,6 +131,33 @@ class Index extends Component
 
         Flux::modal('edit-user')->close();
         Flux::toast(variant: 'success', text: 'User updated successfully.');
+    }
+
+    public function openResetPasswordModal(int $id): void
+    {
+        $this->resetPasswordUserId = $id;
+        $this->resetPasswordNew = '';
+        $this->resetPasswordNew_confirmation = '';
+        Flux::modal('reset-password')->show();
+    }
+
+    public function resetUserPassword(): void
+    {
+        $this->validate([
+            'resetPasswordNew' => ['required', 'string', 'min:8', 'confirmed'],
+            'resetPasswordNew_confirmation' => ['required'],
+        ], [], [
+            'resetPasswordNew' => 'new password',
+            'resetPasswordNew_confirmation' => 'password confirmation',
+        ]);
+
+        User::findOrFail($this->resetPasswordUserId)->update([
+            'password' => Hash::make($this->resetPasswordNew),
+        ]);
+
+        $this->reset(['resetPasswordUserId', 'resetPasswordNew', 'resetPasswordNew_confirmation']);
+        Flux::modal('reset-password')->close();
+        Flux::toast(variant: 'success', text: 'Password updated successfully.');
     }
 
     public function delete(int $id): void

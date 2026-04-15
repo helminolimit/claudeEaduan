@@ -66,8 +66,8 @@ class Dashboard extends Component
     private function baseQuery(): Builder
     {
         return Complaint::query()
-            ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
-            ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo))
+            ->when($this->dateFrom, fn ($q) => $q->whereDate('complaints.created_at', '>=', $this->dateFrom))
+            ->when($this->dateTo, fn ($q) => $q->whereDate('complaints.created_at', '<=', $this->dateTo))
             ->when($this->filterStatus, fn ($q) => $q->where('status', $this->filterStatus))
             ->when($this->filterCategory, fn ($q) => $q->where('category_id', $this->filterCategory))
             ->when($this->filterPriority, fn ($q) => $q->where('priority', $this->filterPriority))
@@ -171,7 +171,7 @@ class Dashboard extends Component
     {
         return Cache::remember($this->cacheKey('trend_chart'), 600, function () {
             $rows = $this->baseQuery()
-                ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
+                ->selectRaw("DATE_FORMAT(complaints.created_at, '%Y-%m') as month, COUNT(*) as count")
                 ->groupBy('month')
                 ->orderBy('month')
                 ->pluck('count', 'month')
