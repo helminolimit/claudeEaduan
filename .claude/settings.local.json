@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__laravel-boost__database-schema",
+      "Bash(php artisan:*)",
+      "Bash(php -r \"echo file_get_contents\\('C:/laragon/www/eaduanv2/config/livewire.php'\\);\")"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "laravel-boost"
+  ]
+}
